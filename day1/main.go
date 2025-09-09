@@ -43,17 +43,44 @@ func main() {
 		list2 = append(list2, num2)
 	}
 
-	sort.Ints(list1)
-	sort.Ints(list2)
+	result1 := historianHysteria1(list1, list2)
+	println(result1)
+	result2 := historianHysteria2(list1, list2)
+	println(result2)
+}
+
+func historianHysteria2(list1 []int, list2 []int) int {
+	similarityScore := 0
+
+	for i := 0; i < len(list1); i++ {
+		times := 0
+		for j := 0; j < len(list2); j++ {
+			if list1[i] == list2[j] {
+				times++
+			}
+		}
+		similarityScore += list1[i] * times
+	}
+
+	return similarityScore
+}
+
+func historianHysteria1(list1 []int, list2 []int) int {
+	newList1 := make([]int, len(list1))
+	newList2 := make([]int, len(list2))
+	copy(newList1, list1)
+	copy(newList2, list2)
+
+	sort.Ints(newList1)
+	sort.Ints(newList2)
 
 	result := 0
 
-	for i := 0; i < len(lines); i++ {
-		result += abs(list1[i] - list2[i])
+	for i := 0; i < len(newList1); i++ {
+		result += abs(newList1[i] - newList2[i])
 	}
 
-	println(result)
-
+	return result
 }
 
 func abs(x int) int {
