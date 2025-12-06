@@ -54,27 +54,15 @@
 (rotate ["R" 155] 50)
 
 
-;; reduce vraca samo poslednji rezultat
-(reduce (fn [cnt pair]
-          (rotate pair cnt))
-        50
-        (map parse? lines))
-
-
 (count (filter zero? (reductions (fn [cnt pair]
                                    (rotate pair cnt))
                                  50
                                  (map parse? lines))))
 
-
-
-
-
-
-
-
-
-
-
-
-
+(reduce (fn [[cnt count] pair]
+          (let [res (rotate pair cnt)]
+            [res (if (= res 0)
+                   (inc count)
+                   count)]))
+        [50 0]
+        (map parse? lines))
