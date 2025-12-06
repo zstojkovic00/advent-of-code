@@ -46,11 +46,11 @@
 ;; tests
 (rotate ["L" 68] 50)
 (rotate ["L" 20] 50)
-(rotate  ["L" 50] 50)
+(rotate ["L" 50] 50)
 
 (rotate ["R" 68] 50)
 (rotate ["R" 68] 20)
-(rotate  ["R" 50] 50)
+(rotate ["R" 50] 50)
 (rotate ["R" 155] 50)
 
 
