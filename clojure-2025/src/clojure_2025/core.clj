@@ -11,12 +11,12 @@
 ;; 4. Uporedi da li je rezultat 0, ako jeste inc
 
 (System/getProperty "user.dir")
-(slurp "src/clojure_2025/tasks/test1.txt")
-(slurp "https://adventofcode.com/2025/day/1/input") ;; ne radi :/ vrv moram da budem ulogovan
+(slurp "resources/test1.txt")
+;;(slurp "https://adventofcode.com/2025/day/1/input")         ;; ne radi :/ vrv moram da budem ulogovan
 
 ;; ucitavanje fajla
 (def lines
-  (str/split-lines (slurp "src/clojure_2025/tasks/input1.txt")))
+  (str/split-lines (slurp "resources/input1.txt")))
 
 (identity lines)
 
@@ -66,3 +66,66 @@
                    count)]))
         [50 0]
         (map parse? lines))
+
+
+;; Day 2: Gift Shop
+
+(System/getProperty "user.dir")
+(slurp "resources/input2.txt")
+
+(def lines
+  (str/split (slurp "resources/input2.txt") #","))
+(identity lines)
+
+;; Problem je sto map prima funkciju i kolekciju a ja saljem dodatni argument direktno
+;;(map str/split lines #"-")
+
+(def products-ids-string
+  (map (fn [line] (str/split line #"-")) lines))
+
+(identity products-ids-string)
+
+(def products-ids
+  (map (fn [product-ids]
+         (map read-string product-ids))
+       products-ids-string))
+
+(identity products-ids)
+
+;; e sada mi treba da za svaki par napravim listu koji kaze od 11 do 22..
+(def id-ranges
+  (map (fn [product-ids]
+         (range (first product-ids) (inc (second product-ids))))
+       products-ids))
+
+(first [11 22])
+(second [11 22])
+
+(let [pair [11 22]]
+  (range (first pair) (inc (second pair))))
+
+(identity id-ranges)
+
+(defn invalid-id? [num]
+  (let [num-str (str num)
+        half-len (quot (count num-str) 2)
+        first-half (subs num-str 0 half-len)
+        second-half (subs num-str half-len)]
+    (= first-half second-half)))
+
+(invalid-id? 22)
+(invalid-id? 11)
+(invalid-id? 1188511885)
+(invalid-id? 38593859)
+
+(apply +
+       (flatten
+         (map (fn [id-range]
+                (filter invalid-id? id-range))
+              id-ranges)))
+
+(->> id-ranges
+     (map (fn [id-range]
+            (filter invalid-id? id-range)))
+     flatten
+     (apply +))
