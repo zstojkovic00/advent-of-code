@@ -21,7 +21,7 @@
 (identity lines)
 
 ;; parsiranje fajla
-(defn parse? [s] (
+(defn parse [s] (
                    let [direction (subs s 0 1)
                         rest (Integer/parseInt (subs s 1))]
                    [direction rest]
@@ -29,9 +29,9 @@
 
 (subs "L68" 0 1)
 (subs "L68" 1)
-(parse? "L68")
+(parse "L68")
 
-(map parse? lines)
+(map parse lines)
 (mod -18 100)
 
 
@@ -57,7 +57,7 @@
 (count (filter zero? (reductions (fn [cnt pair]
                                    (rotate pair cnt))
                                  50
-                                 (map parse? lines))))
+                                 (map parse lines))))
 
 (reduce (fn [[cnt count] pair]
           (let [res (rotate pair cnt)]
@@ -65,7 +65,7 @@
                    (inc count)
                    count)]))
         [50 0]
-        (map parse? lines))
+        (map parse lines))
 
 
 ;; Day 2: Gift Shop
