@@ -24,7 +24,7 @@ fun main() {
     println(count)
 }
 
-/* Zadatak je da se prodje kroz svaki element i da se proveri da li ima 4 susedne rolne papira @
+/* Zadatak je da se prodje kroz svaki element i da se proveri da li ima manje od 4 susedne rolne papira @
  Zato sto forklift moze da pristupi samo tim papirima.*/
 fun findAccessibleRollsOfPaper(lines: List<String>): Int {
     var count = 0
@@ -48,7 +48,10 @@ fun findAccessibleRollsOfPaper(lines: List<String>): Int {
     println(accessibleRollsPos)
     return count
 }
-
+/*
+    Part2: Zadatak je da nakon sto smo pronasli rolne papira koja imaju manje od 4 suseda, treba da ih obrisemo iz grid-a i da to radimo
+    dokle god mozemo, count je zbir svih obrisanih
+ */
 fun findAccessibleRollsOfPaper2(lines: List<String>): List<Pair<Int, Int>> {
     var count = 0
     var accessibleRollsPos = mutableListOf<Pair<Int, Int>>()
