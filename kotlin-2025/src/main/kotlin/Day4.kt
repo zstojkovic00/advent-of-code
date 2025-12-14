@@ -3,16 +3,32 @@ package zeljko.com
 import java.io.File
 
 fun main() {
-    val lines = File("src/main/resources/input4.txt").readLines()
-    val accessibleCount = findAccessibleRollsOfPaper(lines)
-    print(accessibleCount)
+    var lines = File("src/main/resources/input4.txt").readLines().toMutableList()
+//    val accessibleCount = findAccessibleRollsOfPaper(lines)
+//    print(accessibleCount)
 
+    var accessibleRolls = findAccessibleRollsOfPaper2(lines)
+    var count = accessibleRolls.size
+
+    while (accessibleRolls.isNotEmpty()) {
+        lines = lines.mapIndexed { y, line ->
+            line.mapIndexed { x, char ->
+                if (accessibleRolls.contains(Pair(y, x))) '.' else char
+            }.joinToString("")
+        }.toMutableList()
+
+        accessibleRolls = findAccessibleRollsOfPaper2(lines)
+        count += accessibleRolls.size
+    }
+
+    println(count)
 }
 
 /* Zadatak je da se prodje kroz svaki element i da se proveri da li ima 4 susedne rolne papira @
  Zato sto forklift moze da pristupi samo tim papirima.*/
 fun findAccessibleRollsOfPaper(lines: List<String>): Int {
     var count = 0
+    var accessibleRollsPos = mutableListOf<Pair<Int, Int>>()
 
     for (y in lines.indices) {
         for (x in lines[y].indices) {
@@ -22,12 +38,37 @@ fun findAccessibleRollsOfPaper(lines: List<String>): Int {
                 val neighborCount = countNeighbors(y, x, lines)
 
                 if (neighborCount < 4) {
+                    accessibleRollsPos.add(Pair(y, x))
                     count++
                 }
             }
         }
     }
+
+    println(accessibleRollsPos)
     return count
+}
+
+fun findAccessibleRollsOfPaper2(lines: List<String>): List<Pair<Int, Int>> {
+    var count = 0
+    var accessibleRollsPos = mutableListOf<Pair<Int, Int>>()
+
+    for (y in lines.indices) {
+        for (x in lines[y].indices) {
+            val cell = lines[y][x]
+
+            if (cell == '@') {
+                val neighborCount = countNeighbors(y, x, lines)
+
+                if (neighborCount < 4) {
+                    accessibleRollsPos.add(Pair(y, x))
+                    count++
+                }
+            }
+        }
+    }
+
+    return accessibleRollsPos
 }
 
 fun countNeighbors(y: Int, x: Int, lines: List<String>): Int {
