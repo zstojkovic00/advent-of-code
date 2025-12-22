@@ -10,7 +10,6 @@ data class BoxPair(val box1: Vec3, val box2: Vec3, val distance: Double)
 fun main() {
 
     val lines = File("src/main/resources/input8.txt").readLines()
-    println(lines)
     val boxes = mutableListOf<Vec3>()
 
     for (line in lines) {
@@ -24,8 +23,10 @@ fun main() {
         )
     }
     val pairs = mutableListOf<BoxPair>()
+    val boxGroups = mutableMapOf<Vec3, Int>()
 
     for (i in 0 until boxes.size) {
+        boxGroups[boxes[i]] = i
         for (j in i + 1 until boxes.size) {
             val distance = euclideanDistance(boxes[i], boxes[j])
             pairs.add(BoxPair(boxes[i], boxes[j], distance))
@@ -33,26 +34,16 @@ fun main() {
 
     }
     pairs.sortBy { it.distance }
-    println(pairs)
-
-    val junctions = mutableMapOf<Vec3, Int>()
-
-    for ((index, box) in boxes.withIndex()) {
-        junctions[box] = index
-    }
-
-    println(junctions)
 
     for (i in 0 until 1000) {
         val pair = pairs[i]
-
-        val box1Junction = junctions[pair.box1]
-        val box2Junction = junctions[pair.box2]
+        val box1Junction = boxGroups[pair.box1]
+        val box2Junction = boxGroups[pair.box2]
 
         if (box1Junction != box2Junction) {
-            for (box in junctions.keys) {
-                if (junctions[box] == box2Junction) {
-                    junctions[box] = box1Junction as Int
+            for (box in boxGroups.keys) {
+                if (boxGroups[box] == box2Junction) {
+                    boxGroups[box] = box1Junction as Int
                 }
             }
         }
@@ -60,7 +51,7 @@ fun main() {
 
     val junctionGroups = mutableMapOf<Int, Int>()
 
-    for (junction in junctions.values) {
+    for (junction in boxGroups.values) {
         junctionGroups[junction] = junctionGroups.getOrDefault(junction, 0) + 1
     }
 
