@@ -8,8 +8,9 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/aoc-2024" />
-            <option value="$PROJECT_DIR$/aoc-2025" />
+            <option value="$PROJECT_DIR$/2024" />
+            <option value="$PROJECT_DIR$/2025" />
+            <option value="$PROJECT_DIR$/utils" />
           </set>
         </option>
       </GradleProjectSettings>
